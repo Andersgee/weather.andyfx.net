@@ -1,0 +1,30 @@
+@import "@styles/mixins/all";
+@import "@styles/variables/all";
+
+.hero {
+  text-align: center;
+  //background: #0f0;
+
+  @include media-md-xxl() {
+    //background: #f00;
+  }
+
+  @include media-xxl() {
+    //background: #00f;
+  }
+}
+
+.placeholderhero {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  //height: 4rem;
+}
+
+.andyfx {
+  color: #727794;
+  font-size: 4rem;
+  line-height: 4rem;
+  font-weight: 500;
+  letter-spacing: 4px;
+}

@@ -1,0 +1,16 @@
+{
+  "exclude": ["node_modules", "public", ".cache"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@js/*": ["src/js/*"],
+      "@pages/*": ["src/pages/*"],
+      "@templates/*": ["src/templates/*"],
+      "@styles/*": ["src/styles/*"]
+    }
+  }
+}

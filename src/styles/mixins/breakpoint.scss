@@ -1,0 +1,22 @@
+/*
+$sm: 36rem;
+$md: 48rem; 768px
+$lg: 62rem;
+$xl: 75rem;
+$xxl: 118rem; 1888px
+*/
+
+$size-medium: 768px;
+$size-large: 1888px;
+
+@mixin media-md-xxl {
+  @media (min-width: #{$size-medium}) and (max-width: #{$size-large - 1px}) {
+    @content;
+  }
+}
+
+@mixin media-xxl {
+  @media (min-width: #{$size-large}) {
+    @content;
+  }
+}

@@ -1,0 +1,41 @@
+.button {
+  vertical-align: middle;
+  color: #fff;
+  box-shadow: 0 11px 36px 0 rgba(70, 89, 138, 0.25);
+  transition: all 0.15s ease-in-out;
+  margin-top: 2em;
+  border: 0;
+  height: 50px;
+  padding: 1rem 4rem;
+  font-weight: 700;
+  font-size: 0.688rem;
+  line-height: 18px;
+  letter-spacing: 1.54px;
+  text-transform: uppercase;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.button:focus {
+  text-decoration: none;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.varavagar {
+  background: linear-gradient(135deg, #898f58, #c4c8a7);
+}
+
+.climatevisualizer {
+  background: linear-gradient(135deg, #dd574f, #ee8984);
+}
+
+.mozart {
+  background: linear-gradient(135deg, #565d60, #9a9ea0);
+}
+
+.shakespeare {
+  background: linear-gradient(135deg, #a68d6e, #d3bfa6);
+}

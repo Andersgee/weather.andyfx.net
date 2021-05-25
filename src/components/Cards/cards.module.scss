@@ -1,0 +1,35 @@
+@import "@styles/variables/all";
+@import "@styles/mixins/all";
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.heading {
+  text-align: center;
+  font-size: 32px;
+  //font-style: italic;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 40px;
+  max-width: $md;
+  //@include media-md-xxl
+
+  //background: #0f0;
+
+  //transition: width 0.5s ease;
+  @include media-md-xxl() {
+    max-width: 940px;
+    //background: #f00;
+  }
+
+  @include media-xxl() {
+    max-width: 940px;
+    //background: #00f;
+  }
+}
