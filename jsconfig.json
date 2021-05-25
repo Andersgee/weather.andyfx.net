@@ -2,6 +2,7 @@
   "exclude": ["node_modules", "public", ".cache"],
   "compilerOptions": {
     "baseUrl": ".",
+    "jsx": "react",
     "paths": {
       "@src/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
