@@ -9,6 +9,7 @@ async function fetchweather(lon, lat) {
     .then((res) => res.json())
     .catch((err) => {
       console.log(err);
+      return null;
     });
   return forecast;
 }
