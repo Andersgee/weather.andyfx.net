@@ -1,5 +1,22 @@
 @import "@styles/mixins/all";
+@import "@styles/variables/all";
 
 .table {
-  background: #000;
+  //background: rgb(161, 35, 35);
+}
+
+.tablerow {
+  display: flex;
+  justify-content: flex-start;
+  //background: #000;
+}
+
+.item {
+  min-width: 8rem;
+  background: #fff;
+  padding: 2px;
+  margin: 2px;
+  text-align: right;
+  //font-weight: 400;
+  font-family: $font-mono;
 }
