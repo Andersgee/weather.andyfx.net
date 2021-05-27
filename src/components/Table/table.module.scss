@@ -1,9 +1,15 @@
 @import "@styles/mixins/all";
 @import "@styles/variables/all";
 
+.container {
+  display: flex;
+  justify-content: center;
+}
+
 .table {
   //background: rgb(161, 35, 35);
   overflow: auto;
+  margin: auto;
 }
 
 .tablerow {

@@ -93,7 +93,7 @@ function TableHead() {
       <div className={styles.item}>Cloudiness</div>
       <div className={styles.item}>Rain</div>
       <div className={styles.item}>Windspeed</div>
-      <div className={styles.item}>Winddirection</div>
+      <div className={styles.item}>Winddir</div>
     </div>
   );
 }
@@ -106,9 +106,11 @@ export default function Table({ weather }) {
   const H = TableHead();
 
   return (
-    <div className={styles.table}>
-      {H}
-      {weather.map((x) => TableRow(x))}
+    <div className={styles.container}>
+      <div className={styles.table}>
+        {H}
+        {weather.map((x) => TableRow(x))}
+      </div>
     </div>
   );
 }
