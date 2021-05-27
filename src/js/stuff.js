@@ -8,22 +8,33 @@ function saturationdensity(t) {
   return density;
 }
 
-function dewpoint(t, rh) {
+function waterdensity(t, rh) {
+  // [kg/m3]
+  return rh * saturationdensity(t);
+}
+
+export function dewpoint(t, rh) {
   /*    
   what is dewpoint?
   water will condense when air cools through contact with a surface if the surface is sufficiently cold
-  (simply because air can hold less water when cold air can)
+  (simply because colder air can carry less water than hot air. (carry as in actual kg/m3)
+
   this often happens in the morning when the surface/ground is colder than the air.
 
   t: air temperature [C]
   rh: relative humidity [0..1]
   returns: The surface temperature [C] required to produce water droplets on the surface
   */
-  const b = 17.62;
-  const c = 243.12;
-  const g = Math.log(rh) + (b * t) / (c + t);
-  const T = (c * g) / (b - g);
-  return T;
+
+  const dens = waterdensity(t, rh);
+  //decrease temperature until relative humidity > 1
+  //which happens when current waterdensity is more than saturationdensity (at the lower temp)
+  for (let x = t; (x -= 1); x > -40) {
+    if (saturationdensity(x) < dens) {
+      return x;
+    }
+  }
+  return -40;
 }
 
 export function densitydifference(airtemperature, relativehumidity) {
@@ -47,10 +58,8 @@ export function densitydifference(airtemperature, relativehumidity) {
   //According to (some reference here) the relative humidity inside the leaf tries to stay at 99.3%
   //airpressure is technically involved in these calculations but the atmospheric pressure changes (which do exist) are insignificant to the outcome.
 
-  const density_saturated = saturationdensity(airtemperature);
-
-  const density_stomata = density_saturated * 0.993;
-  const density_air = density_saturated * relativehumidity;
+  const density_air = waterdensity(airtemperature, relativehumidity);
+  const density_stomata = waterdensity(airtemperature, 0.993);
 
   const difference = density_stomata - density_air; //[kg/m3]
 

@@ -1,8 +1,12 @@
 import * as React from "react";
 import * as styles from "./weathercanvas.module.scss";
 import useWeather from "@hooks/useWeather";
-import { densitydifference } from "@js/stuff";
+import { densitydifference, dewpoint } from "@js/stuff";
 
+//hPa -> atm
+//atm = 0.000986923 * hPa
+
+//average sealevel pressure = 1013.25 hPa (aka 1 atm)
 function weatherlist(data) {
   const w = data.list.map((x) => {
     const X = {
@@ -25,9 +29,11 @@ function weatherlist(data) {
     //derived variables
 
     //0 humidity at 30 C would give a value of 30 [g/m3] difference (basically max of what I could ever expect, so scale by this to get some 0..1 range)
-    let waterneed = densitydifference(X.temp, X.humidity) / 30;
+    const waterneed = densitydifference(X.temp, X.humidity) / 30;
+    const dewtemp = dewpoint(X.temp, X.humidity);
 
     X.waterneed = waterneed;
+    X.dewtemp = dewtemp;
 
     return X;
   });
