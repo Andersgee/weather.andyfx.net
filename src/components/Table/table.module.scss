@@ -3,6 +3,7 @@
 
 .table {
   //background: rgb(161, 35, 35);
+  overflow: auto;
 }
 
 .tablerow {
@@ -14,8 +15,8 @@
 .item {
   min-width: 8rem;
   background: #fff;
-  padding: 2px;
-  margin: 2px;
+  padding: 2px 16px 2px 2px;
+  margin: 1px 1px 0 1px;
   text-align: right;
   //font-weight: 400;
   font-family: $font-mono;

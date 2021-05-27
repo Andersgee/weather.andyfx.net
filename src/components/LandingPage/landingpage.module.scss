@@ -2,7 +2,7 @@
 
 .landingpage {
   display: grid;
-  grid-template-rows: minmax(10rem, 20rem) auto auto;
+  grid-template-rows: minmax(5rem, 10rem) auto auto;
   min-height: 100vh;
   background: $color-background;
 }

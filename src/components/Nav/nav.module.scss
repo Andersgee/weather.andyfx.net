@@ -3,15 +3,16 @@
 .nav {
   display: flex;
   justify-content: space-evenly;
-  background: #f00;
+  //background: #f00;
 
   @include media-md-xxl() {
-    background: #0f0;
+    //background: #0f0;
     justify-content: center;
   }
 }
 
 .navbutton {
+  cursor: pointer;
   &:hover {
     background: #67b6e4;
   }
