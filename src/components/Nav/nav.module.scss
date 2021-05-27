@@ -7,5 +7,35 @@
 
   @include media-md-xxl() {
     background: #0f0;
+    justify-content: center;
   }
+}
+
+.navbutton {
+  &:hover {
+    background: #67b6e4;
+  }
+
+  &:focus {
+    text-decoration: none;
+  }
+
+  outline: none;
+  border: 0;
+  margin: 0;
+  padding: 8px 32px 8px 32px;
+  width: 50%;
+
+  @include media-md-xxl() {
+    width: auto;
+    padding: 8px 64px 8px 64px;
+    //margin: 0 16px 0 16px;
+    //border-radius: 8px;
+  }
+}
+
+.active {
+  //background: #ff7aff;
+  color: #000;
+  font-weight: 700;
 }
