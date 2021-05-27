@@ -58,25 +58,35 @@ function TableRow(x) {
       <div className={styles.item}>{`${humidity(x.humidity)}`}</div>
       <div className={styles.item}>{`${cloudiness(x.cloudiness)}`}</div>
       <div className={styles.item}>{`${rain(x.rain)}`}</div>
-      <div className={styles.item}>{`${windspeed(x.windspeed)}`}</div>
-      <div className={styles.item}>
-        <svg
-          width="16px"
-          height="16px"
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            transform: `rotate(${x.winddeg}deg)`,
-          }}
-        >
-          <path
-            stroke="black"
-            strokeWidth="3"
-            strokeLinecap="round"
-            d="M 50 10 L 50 90 M 30 60 L 50 90 L 70 60"
-          />
-        </svg>
+      <div
+        className={styles.item}
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <div>{`${windspeed(x.windspeed)}`}</div>
+        <div>
+          <svg
+            width="16px"
+            height="16px"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              transform: `rotate(${x.winddeg}deg)`,
+              marginTop: "5px",
+              marginLeft: "3px",
+            }}
+          >
+            <path
+              stroke="black"
+              strokeWidth="3"
+              strokeLinecap="round"
+              d="M 50 10 L 50 90 M 30 65 L 50 90 L 70 65"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );
@@ -92,8 +102,7 @@ function TableHead() {
       <div className={styles.item}>Humidity</div>
       <div className={styles.item}>Cloudiness</div>
       <div className={styles.item}>Rain</div>
-      <div className={styles.item}>Windspeed</div>
-      <div className={styles.item}>Winddir</div>
+      <div className={styles.item}>Wind</div>
     </div>
   );
 }
