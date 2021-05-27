@@ -1,9 +1,9 @@
 @import "@styles/mixins/all";
 
 .main {
-  background: #00f;
+  //background: #00f;
 
   @include media-md-xxl() {
-    background: #000;
+    //background: #000;
   }
 }

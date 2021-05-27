@@ -2,20 +2,18 @@ import * as React from "react";
 import * as styles from "./nav.module.scss";
 import clsx from "clsx";
 
-export default function Nav() {
-  const [active, setActive] = React.useState(0);
-
+export default function Nav({ active, setActive }) {
   return (
     <div className={styles.nav}>
       <button
-        onClick={() => setActive(0)}
-        className={clsx(styles.navbutton, active === 0 && styles.active)}
+        onClick={() => setActive("table")}
+        className={clsx(styles.navbutton, active === "table" && styles.active)}
       >
         Table
       </button>
       <button
-        onClick={() => setActive(1)}
-        className={clsx(styles.navbutton, active === 1 && styles.active)}
+        onClick={() => setActive("visual")}
+        className={clsx(styles.navbutton, active === "visual" && styles.active)}
       >
         Visual
       </button>
