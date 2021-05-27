@@ -1,0 +1,31 @@
+@import "@styles/mixins/all";
+@import "@styles/variables/all";
+
+.button {
+  outline: none;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.3s;
+  width: auto;
+  //font-size: 1.2rem;
+  font-weight: 500;
+  color: #000;
+
+  @include media-sm() {
+    width: 25%;
+    border-radius: 0;
+  }
+}
+
+.button:focus {
+  text-decoration: none;
+}
+
+.active {
+  background: $color-blue;
+  color: #fff;
+}

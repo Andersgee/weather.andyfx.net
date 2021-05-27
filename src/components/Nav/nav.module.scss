@@ -1,0 +1,11 @@
+@import "@styles/mixins/all";
+
+.nav {
+  display: flex;
+  justify-content: space-evenly;
+  background: #f00;
+
+  @include media-md-xxl() {
+    background: #0f0;
+  }
+}
