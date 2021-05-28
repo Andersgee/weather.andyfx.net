@@ -1,5 +1,7 @@
-@import "@styles/mixins/all";
+@import "@styles/variables/all";
 
 .visual {
-  //background: #000;
+  background: $color-background;
+  display: flex;
+  justify-content: center;
 }
