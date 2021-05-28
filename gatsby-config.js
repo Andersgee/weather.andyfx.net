@@ -32,5 +32,20 @@ module.exports = {
         extensions: ["js", "jsx", "scss"],
       },
     },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Weather`,
+        short_name: `Weather`,
+        description: `How much water a tree needs, based on weather data.`,
+        lang: `en`,
+        display: `standalone`,
+        icon: `src/images/andyfx.png`,
+        start_url: `/`,
+        background_color: `#F5F8FC`,
+        theme_color: `#A6CDF5`,
+        theme_color_in_head: false,
+      },
+    },
   ],
 };
