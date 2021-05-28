@@ -17,14 +17,18 @@
 .placeholderhero {
   display: flex;
   justify-content: center;
-  margin-top: 5rem;
+  margin-top: 1rem;
   //height: 4rem;
 }
 
 .andyfx {
   color: #727794;
-  font-size: 4rem;
-  line-height: 4rem;
+  font-size: 3rem;
+  line-height: 3rem;
   font-weight: 500;
   letter-spacing: 4px;
+}
+
+.subtitle {
+  text-align: center;
 }

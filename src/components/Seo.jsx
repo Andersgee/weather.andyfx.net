@@ -7,9 +7,10 @@ const Seo = ({ title, description, image, article, lang }) => {
   const { pathname } = useLocation();
   //pathname will be "/" for root
 
-  const siteUrl = "https://www.andyfx.net";
+  const siteUrl = "https://weather.andyfx.net";
   const defaultTitle = "andyfx";
-  const defaultDescription = "Andyfx latest web projects and contact.";
+  const defaultDescription =
+    "Andyfx weather. How much water a tree needs, based on weather data.";
 
   const seo = {
     title: title || defaultTitle,

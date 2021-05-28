@@ -4,9 +4,13 @@ import Logo from "./Logo";
 
 export default function Hero() {
   return (
-    <div className={styles.placeholderhero}>
-      <Logo />
-      <h1 className={styles.andyfx}>Andyfx</h1>
+    <div>
+      <div className={styles.placeholderhero}>
+        <Logo />
+        <h1 className={styles.andyfx}>Weather</h1>
+      </div>
+      <div className={styles.subtitle}>How much water a tree needs,</div>
+      <div className={styles.subtitle}>based on weather data.</div>
     </div>
   );
 }
