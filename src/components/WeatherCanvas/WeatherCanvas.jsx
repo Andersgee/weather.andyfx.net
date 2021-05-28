@@ -44,11 +44,9 @@ export default function WeatherCanvas() {
   const lon = 16.33;
   const lat = 59.91;
   const w = useWeather(lon, lat);
-  console.log(w);
 
   if (w) {
     let list = weatherlist(w);
-    console.log("list: ", list);
   }
 
   return (

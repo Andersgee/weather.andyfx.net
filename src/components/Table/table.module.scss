@@ -15,14 +15,21 @@
 
 .tablerow {
   display: flex;
-  justify-content: flex-start;
+  //justify-content: flex-start;
   //background: #000;
+  //background: #fff;
+  background: #555;
+  &:hover {
+    font-weight: 700;
+  }
 }
 
 .item {
+  position: relative;
   min-width: 8rem;
+  //background: rgb(221, 107, 107);
   background: #fff;
-  padding: 2px 16px 2px 2px;
+  //padding: 2px 16px 2px 2px;
   margin: 1px 1px 0 1px;
   text-align: right;
   //font-weight: 400;

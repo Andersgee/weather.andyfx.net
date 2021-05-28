@@ -53,10 +53,33 @@ function TableRow(x) {
       <div className={styles.item}>{`${militarytimeFromHour(
         x.date.getHours()
       )}`}</div>
-      <div className={styles.item}>{`${waterneed(x.waterneed)}`}</div>
-      <div className={styles.item}>{`${temp(x.temp)}`}</div>
-      <div className={styles.item}>{`${humidity(x.humidity)}`}</div>
-      <div className={styles.item}>{`${cloudiness(x.cloudiness)}`}</div>
+
+      <div className={styles.item}>
+        {Rect(`${Math.round(x.waterneed * 100)}%`, "rgb(221, 107, 107)")}
+        <div style={{ position: "absolute", right: "0" }}>{`${waterneed(
+          x.waterneed
+        )}`}</div>
+      </div>
+
+      <div className={styles.item}>
+        {Rect(`${Math.round((100 * x.temp) / 30)}%`, "rgb(122, 212, 162)")}
+        <div style={{ position: "absolute", right: "0" }}>{`${temp(
+          x.temp
+        )}`}</div>
+      </div>
+
+      <div className={styles.item}>
+        {Rect(`${Math.round(100 * x.humidity)}%`, "rgb(116, 127, 223)")}
+        <div style={{ position: "absolute", right: "0" }}>{`${humidity(
+          x.humidity
+        )}`}</div>
+      </div>
+      <div className={styles.item}>
+        {Rect(`${Math.round(100 * x.cloudiness)}%`, "rgb(194, 194, 194)")}
+        <div style={{ position: "absolute", right: "0" }}>{`${cloudiness(
+          x.cloudiness
+        )}`}</div>
+      </div>
       <div className={styles.item}>{`${rain(x.rain)}`}</div>
       <div
         className={styles.item}
@@ -89,6 +112,20 @@ function TableRow(x) {
         </div>
       </div>
     </div>
+  );
+}
+
+function Rect(p, color) {
+  return (
+    <svg width={p} height="100%" style={{ position: "absolute", right: "0" }}>
+      <rect
+        width="100%"
+        height="100%"
+        style={{
+          fill: color,
+        }}
+      />
+    </svg>
   );
 }
 

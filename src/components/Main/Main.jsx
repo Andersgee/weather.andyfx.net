@@ -12,7 +12,6 @@ export default function Main() {
   const lon = 16.33; //salbohed
   const lat = 59.91;
   const weather = useWeather(lon, lat);
-  console.log(weather);
 
   return (
     <div className={styles.main}>

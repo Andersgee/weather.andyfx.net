@@ -6,7 +6,7 @@ import Footer from "@components/Footer";
 export default function LandingPage() {
   return (
     <div className={styles.landingpage}>
-      <div>hero</div>
+      <div>väder.</div>
       <Main />
       <Footer />
     </div>

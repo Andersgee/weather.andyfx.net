@@ -45,6 +45,7 @@ async function fetchweather(lon, lat) {
       console.log(err);
       return null;
     });
+  //console.log("forecast: ", forecast);
   return forecast;
 }
 
