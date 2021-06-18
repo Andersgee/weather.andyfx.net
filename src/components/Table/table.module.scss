@@ -9,8 +9,10 @@
 
 .table {
   //background: rgb(161, 35, 35);
-  overflow: auto;
-  margin: auto;
+  //overflow: auto;
+  overflow-x: scroll;
+  background: #333;
+  //margin: auto;
 }
 
 .tablerow {
@@ -18,10 +20,16 @@
   //justify-content: flex-start;
   //background: #000;
   //background: #fff;
-  background: #555;
+  //width: 100%;
+  //background: #f00;
+  margin: 1px 0 0 0;
   &:hover {
     font-weight: 700;
   }
+}
+
+.textpadding {
+  padding: 0 0.5rem 0 0;
 }
 
 .item {
@@ -30,7 +38,8 @@
   //background: rgb(221, 107, 107);
   background: #fff;
   //padding: 2px 16px 2px 2px;
-  margin: 1px 1px 0 1px;
+  margin: 0 1px 0 0;
+  padding: 0 0.5rem 0 0;
   text-align: right;
   //font-weight: 400;
   font-family: $font-mono;

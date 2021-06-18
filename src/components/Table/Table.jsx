@@ -56,29 +56,33 @@ function TableRow(x) {
 
       <div className={styles.item}>
         {Rect(`${Math.round(x.waterneed * 100)}%`, "rgb(221, 107, 107)")}
-        <div style={{ position: "absolute", right: "0" }}>{`${waterneed(
-          x.waterneed
-        )}`}</div>
+        <div
+          className={styles.textpadding}
+          style={{ position: "absolute", right: "0" }}
+        >{`${waterneed(x.waterneed)}`}</div>
       </div>
 
       <div className={styles.item}>
         {Rect(`${Math.round((100 * x.temp) / 30)}%`, "rgb(122, 212, 162)")}
-        <div style={{ position: "absolute", right: "0" }}>{`${temp(
-          x.temp
-        )}`}</div>
+        <div
+          className={styles.textpadding}
+          style={{ position: "absolute", right: "0" }}
+        >{`${temp(x.temp)}`}</div>
       </div>
 
       <div className={styles.item}>
         {Rect(`${Math.round(100 * x.humidity)}%`, "rgb(116, 127, 223)")}
-        <div style={{ position: "absolute", right: "0" }}>{`${humidity(
-          x.humidity
-        )}`}</div>
+        <div
+          className={styles.textpadding}
+          style={{ position: "absolute", right: "0" }}
+        >{`${humidity(x.humidity)}`}</div>
       </div>
       <div className={styles.item}>
         {Rect(`${Math.round(100 * x.cloudiness)}%`, "rgb(194, 194, 194)")}
-        <div style={{ position: "absolute", right: "0" }}>{`${cloudiness(
-          x.cloudiness
-        )}`}</div>
+        <div
+          className={styles.textpadding}
+          style={{ position: "absolute", right: "0" }}
+        >{`${cloudiness(x.cloudiness)}`}</div>
       </div>
       <div className={styles.item}>{`${rain(x.rain)}`}</div>
       <div
@@ -89,7 +93,7 @@ function TableRow(x) {
         }}
       >
         <div>{`${windspeed(x.windspeed)}`}</div>
-        <div>
+        <div className={styles.textpadding}>
           <svg
             width="16px"
             height="16px"
