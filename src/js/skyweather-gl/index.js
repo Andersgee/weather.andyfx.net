@@ -52,12 +52,14 @@ const coeffy = (t) => [
   -0.0109 * t + 0.0529,
 ];
 
-function datevec2ts(datevec) {
-  //time standard 0..24
-  const h = datevec[3];
-  const m = datevec[4];
-  const ts = h + m / 60;
-  return ts;
+function timestandard(date) {
+  return date.getHours() + date.getMinutes() / 60;
+}
+
+function dayOfYear(date) {
+  return Math.floor(
+    (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+  );
 }
 
 export default class Skyweather {
@@ -78,7 +80,7 @@ export default class Skyweather {
     webgl.bind3dtexture(this.gl, tex3d, 0);
     webgl.bind3dtexture(this.gl, tex3d2, 1);
 
-    setcanvassize(this.gl, this.canvas, this.uniforms);
+    this.handlesizing();
     window.addEventListener("resize", this.resizehandler);
 
     this.animstart = performance.now();
@@ -91,30 +93,30 @@ export default class Skyweather {
     setcanvassize(this.gl, this.canvas, this.uniforms);
   }
 
-  setuniforms(data, datevec, weatherdata) {
-    this.uniforms.cloudcoverage = data[4] / 100;
-    this.uniforms.rain = data[7];
+  setuniforms(data, city) {
+    this.uniforms.cloudcoverage = data.cloudiness;
+    this.uniforms.rain = data.rain;
 
-    const ts = datevec2ts(datevec);
+    const ts = timestandard(data.date);
+    const J = dayOfYear(data.date);
     //const J = 300; //julian date 1..365
     //const L = d2r(16.321638); //site Longitude
     //const l = d2r(59.914009); //site latitude
     //const SM = d2r(L); //time zone standard meridian
-    const J = datevec[6];
-    const L = d2r(weatherdata.meta.lnglat[0]);
-    const l = d2r(weatherdata.meta.lnglat[1]);
-    const SM = d2r((15 * weatherdata.meta.timezone) / 3600); //each 3600 seconds is 15 degrees
+
+    const L = d2r(city.coord.lon);
+    const l = d2r(city.coord.lat);
+    const SM = d2r((15 * city.timezone) / 3600); //each 3600 seconds is 15 degrees
 
     this.uniforms.ts = ts;
     this.uniforms.solzenazi = solarposition(J, ts, L, l, SM);
-    //console.log("solzenazi: ", this.uniforms.solzenazi);
+    console.log("solzenazi: ", this.uniforms.solzenazi);
 
     this.uniforms.cY = coeffY(this.uniforms.turbidity);
     this.uniforms.cx = coeffx(this.uniforms.turbidity);
     this.uniforms.cy = coeffy(this.uniforms.turbidity);
 
-    this.uniforms.dt = data[9];
-    console.log("this.uniforms.dt: ", this.uniforms.dt);
+    this.uniforms.dt = 0;
     //wasm.solarposition(ptr.solzenazi,  J, uniforms.ts, L,l,SM);
     //wasm.skycoeffs(ptr.coeffs, ptr.cY, ptr.cx, ptr.cy,  ptr.solzenazi, uniforms.turbidity)
   }

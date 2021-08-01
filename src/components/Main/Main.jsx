@@ -21,7 +21,9 @@ export default function Main() {
     <div className={styles.main}>
       <Nav active={active} setActive={setActive} />
       {active === "table" && <Table weather={weather} />}
-      {active === "visual" && <Visual glsl={glsl} textures={textures} />}
+      {active === "visual" && (
+        <Visual weather={weather} glsl={glsl} textures={textures} />
+      )}
     </div>
   );
 }

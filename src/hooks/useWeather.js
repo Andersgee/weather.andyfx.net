@@ -55,7 +55,7 @@ export default function useWeather(lon, lat) {
   useEffect(() => {
     fetchweather(lon, lat).then((w) => {
       if (w?.cod === "200") {
-        setWeather(weatherlist(w));
+        setWeather({ list: weatherlist(w), city: w.city });
       }
     });
   }, [lon, lat]);

@@ -35,7 +35,7 @@ function shaderuniforms() {
     cy: [0, 0, 0, 0, 0],
     turbidity: 4,
     cloudtex: 0,
-    cloudtex: 1,
+    cloudtex2: 1,
     dt: 0,
     time: 0,
   };
@@ -184,7 +184,7 @@ function storetexImage3D(gl, X, Y, Z, arraybuffer) {
   );
 }
 
-export default {
+const webgl = {
   bind2dtexture,
   bind3dtexture,
   shaderlayout,
@@ -194,3 +194,5 @@ export default {
   shaderprogram,
   draw,
 };
+
+export default webgl;

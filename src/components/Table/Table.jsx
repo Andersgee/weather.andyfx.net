@@ -159,7 +159,7 @@ export default function Table({ weather }) {
     <div className={styles.container}>
       <div className={styles.table}>
         {H}
-        {weather.map((x) => TableRow(x))}
+        {weather.list.map((x) => TableRow(x))}
       </div>
     </div>
   );
