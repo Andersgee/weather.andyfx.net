@@ -1,19 +1,13 @@
 import * as React from "react";
-import { useRef, useEffect } from "react";
 import * as styles from "./visual.module.scss";
+import SkyCanvas from "@components/SkyCanvas";
 
 export default function Visual({ glsl, textures }) {
-  const canvasrref = useRef();
-
-  useEffect(() => {
-    console.log(canvasrref);
-    const canvas = canvasrref.current;
-    console.log(canvas);
-  }, []);
+  const isLoaded = glsl && textures;
 
   return (
     <div className={styles.visual}>
-      <canvas ref={canvasrref} />
+      {isLoaded && <SkyCanvas glsl={glsl} textures={textures} />}
     </div>
   );
 }
