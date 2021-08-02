@@ -110,7 +110,7 @@ export default class Skyweather {
 
     this.uniforms.ts = ts;
     this.uniforms.solzenazi = solarposition(J, ts, L, l, SM);
-    console.log("solzenazi: ", this.uniforms.solzenazi);
+    //console.log("solzenazi: ", this.uniforms.solzenazi);
 
     this.uniforms.cY = coeffY(this.uniforms.turbidity);
     this.uniforms.cx = coeffx(this.uniforms.turbidity);
