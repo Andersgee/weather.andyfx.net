@@ -10,7 +10,7 @@ export default function SkyCanvas({ weather, glsl, textures }) {
       console.log("instantiating a new Skyweather");
       const canvas = canvasref.current;
       const sky = new Skyweather(canvas, glsl, textures);
-      const weatherdata = weather.list[0];
+      const weatherdata = weather.list[3];
       sky.setuniforms(weatherdata, weather.city);
     }
   }, [weather, glsl, textures]);

@@ -95,6 +95,7 @@ export default class Skyweather {
 
   setuniforms(data, city) {
     this.uniforms.cloudcoverage = data.cloudiness;
+    console.log("this.uniforms.cloudcoverage:", this.uniforms.cloudcoverage);
     this.uniforms.rain = data.rain;
 
     const ts = timestandard(data.date);
