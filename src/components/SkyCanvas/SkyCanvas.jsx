@@ -6,15 +6,28 @@ import * as styles from "./skycanvas.module.scss";
 export default function SkyCanvas({ weather, glsl, textures }) {
   const canvasref = useRef();
   const [sky, setSky] = useState(null);
-  const [w, setW] = useState(weather.list[3]);
-  const [cloudiness, setCloudiness] = useState(0);
+  const [index, setIndex] = useState(3);
+  const [w, setW] = useState(weather.list[index]);
 
   const handleCloudiness = (e) => {
-    console.log("cloudiness:", e.target.value);
-    setCloudiness(e.target.value);
-    w.cloudiness = e.target.value;
-    sky.setuniforms(w, weather.city);
-    console.log("w.cloudiness", w.cloudiness);
+    const w_new = { ...w, cloudiness: e.target.value };
+    sky.setuniforms(w_new, weather.city);
+    setW(w_new);
+  };
+
+  const handleRain = (e) => {
+    const w_new = { ...w, rain: e.target.value };
+    sky.setuniforms(w_new, weather.city);
+    setW(w_new);
+  };
+
+  const handleIndex = (e) => {
+    const i = e.target.value;
+    const w_new = weather.list[i];
+    console.log("weather.date:", w_new.date);
+    sky.setuniforms(w_new, weather.city);
+    setW(w_new);
+    setIndex(i);
   };
 
   useEffect(() => {
@@ -22,20 +35,39 @@ export default function SkyCanvas({ weather, glsl, textures }) {
     const canvas = canvasref.current;
     const sky = new Skyweather(canvas, glsl, textures);
     setSky(sky);
-    sky.setuniforms(w, weather.city);
+    sky.setuniforms(weather.list[0], weather.city);
   }, [weather, glsl, textures]);
 
   return (
     <div className={styles.skycanvas}>
+      <div>cloudiness</div>
       <input
         type="range"
+        step={0.01}
         min={0}
         max={1}
-        step={0.01}
-        value={cloudiness}
+        value={w.cloudiness}
         onChange={handleCloudiness}
       />
-      <div>canvas below here</div>
+      <div>rain</div>
+      <input
+        type="range"
+        step={0.01}
+        min={0}
+        max={1}
+        value={w.rain}
+        onChange={handleRain}
+      />
+      <div>index</div>
+      <input
+        type="range"
+        step={1}
+        min={0}
+        max={39}
+        value={index}
+        onChange={handleIndex}
+      />
+      <div>image</div>
       <canvas ref={canvasref} className={styles.canvas} />
     </div>
   );
