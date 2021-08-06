@@ -130,7 +130,6 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
   return vec4(col, alpha);
 }
 
-/*
 vec3 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
                          vec2 p1, vec2 p2) {
   vec2 posInLine = smoothstep(p1, p2, uv);
@@ -171,7 +170,7 @@ vec3 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
   return brushstroke_aligned(R * uv, uv, bgcol, col, R * p1 - width,
                              R * p2 + width);
 }
-*/
+
 void main(void) {
   // between 30 and 90 degrees from horizontal
   float fovy_offset = PI / 6.0;
@@ -197,18 +196,28 @@ void main(void) {
   // cloudrgba.xyz = mix(cloudrgba.xyz, cloudrgba.xyz * 0.1, rainfactor);
   fragcolor = vec4(mix(skyrgb, cloudrgba.xyz, cloudrgba.w), 1.0);
 
-  /*
-    vec4 raincol = vec4(0.25*mix(skyrgb,cloudrgba.xyz,0.66)/vrain, 0.9);
-    vec2 startpoint = vec2(-1.3, 0.5-2.5*t);
-    vec2 endpoint = vec2(-1.3, -1.0-2.5*t);
-    float width = 2.0;
-    vec3 rainbrushrgb = brushstroke(uv, fragcolor.xyz, raincol, startpoint,
-    endpoint, width); rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
-    smoothstep(0.0, 1.0, 1.0-sqrt(uv.y))); //fade in effect when moving down in
-    y
+  //////////
+  // RAIN //
+  //////////
 
-    fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5*clamp01(2.0*rain));
-  */
+  vec2 uv = vclipspace.xy * 0.5 + 0.5;
+  float vrain = (rain > 0.0) ? 2.0 : 1.0;
+  float t = ts / 24.0 + fract(time);
+
+  vec4 raincol = vec4(mix(skyrgb, cloudrgba.xyz, 0.66) * 0.25 / vrain, 0.9);
+  vec2 startpoint = vec2(-1.3, 0.5 - 2.5 * t);
+  vec2 endpoint = vec2(-1.3, -1.0 - 2.5 * t);
+  float width = 2.0;
+
+  vec3 rainbrushrgb =
+      brushstroke(uv, fragcolor.xyz, raincol, startpoint, endpoint, width);
+
+  // fade in effect when moving down in
+  float rainbrusheffect = 1.0 - sqrt(uv.y);
+  rainbrushrgb =
+      mix(fragcolor.xyz, rainbrushrgb, smoothstep(0.0, 1.0, rainbrusheffect));
+
+  fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5 * clamp01(2.0 * rain));
 }
 
 #endif

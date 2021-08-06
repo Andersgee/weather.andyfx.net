@@ -112,7 +112,15 @@ float HG(float u, float g) {
 float B(float d) { return exp(-d); }             // beers
 float P(float d) { return 1.0 - exp(-2.0 * d); } // powder
 
-// Rain
+//////////
+// Rain //
+//////////
+
+mat2 rotmat(float r) {
+  float c = cos(r);
+  float s = sin(r);
+  return mat2(c, s, -s, c);
+}
 
 float dtoa(float d, float amount) {
   return clamp01(1.0 / (clamp(d, 1.0 / amount, 1.0) * amount));
