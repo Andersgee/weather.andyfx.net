@@ -13,7 +13,7 @@ void main() {
   gl_Position = vec4(clipspace, 0.0, 1.0);
 
   // more diffuse at higher coverage
-  clouddiffuse = 0.7 * smoothstep(0.25, 1.0, cloudcoverage);
+  clouddiffuse = 0.75 * smoothstep(0.25, 1.0, cloudcoverage);
 
   // less sharpness at high coverage
   cloudsharpness = cloudcoverage - 0.2 * smoothstep(0.25, 0.75, cloudcoverage);
@@ -60,12 +60,11 @@ vec3 skycolor(float zenith, float azimuth) {
 }
 
 float dens(vec3 p, vec3 offset) {
-  // make clouddiffuse depend on actual y position of pixel?
-  float clouddiffuseY =
-      clouddiffuse * (0.25 + 0.75 * smoothstep(-1.0, 0.5, vclipspace.y));
+  // larger diffuse effect at top of screen
+  float diffuseeffect = (0.25 + 0.75 * smoothstep(-1.0, 0.5, vclipspace.y));
 
   vec3 texcoord = 0.0005 * (p + offset + vec3(0.0, 0.41 * p.y, 0.11 * p.z));
-  return clouddiffuseY + texture(cloudtex, texcoord).x;
+  return clouddiffuse * diffuseeffect + texture(cloudtex, texcoord).x;
 }
 
 float lightconedens(vec3 p, vec3 p0, vec3 p1, vec3 p3, vec3 p5, vec3 p6,
@@ -89,14 +88,15 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
   vec3 p5 = 2.0 * ss * R * vec3(0.074947, 0.970142, -0.230665);
   vec3 p6 = 4.0 * ss * R * vec3(0.0, 1.0, 0.0);
 
-  vec3 offset = 0.02 * vec3(0.0, -2.61 * dt, 1.0 * dt); // put wind/movement
-                                                        // here
+  // put wind/movement here
+  vec3 offset = 0.02 * vec3(0.0, -2.61 * dt, 1.0 * dt);
   offset += vec3(0.0, -time * 80.0, 0.0);
 
   float hg = HG(dot(sundir, rd), 0.5) * 0.5; // phase
   float sumclouddens = 0.0;
 
-  vec3 col = skyrgb; // start with some color and attenuate it
+  // start with some color and attenuate it
+  vec3 col = skyrgb;
   vec3 p;
   float clouddens, lightdens, energy;
 
@@ -140,12 +140,14 @@ void main(void) {
 
   vec3 rd = zenazi2rd(zenith, azimuth);
   vec3 sundir = zenazi2rd(solzenazi.x, solzenazi.y);
-
   vec3 ro = clouddistance(rd) * rd; // where clouds start
+
+  // larger rain effect at bottom of screen
+  // float raineffect = 0.8 - 0.75 * smoothstep(-0.95, 0.2, vclipspace.y);
+  // float rainfactor = smoothstep(0.0, 1.5, rain);
 
   vec3 skyrgb = skycolor(zenith, azimuth);
   vec3 sunrgb = skycolor(0.99 * solzenazi.x, solzenazi.y);
-
   vec4 cloudrgba = cloudcolor(ro, rd, sundir, skyrgb, sunrgb);
 
   fragcolor = vec4(mix(skyrgb, cloudrgba.xyz, cloudrgba.w), 1.0);
