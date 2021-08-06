@@ -60,8 +60,12 @@ vec3 skycolor(float zenith, float azimuth) {
 }
 
 float dens(vec3 p, vec3 offset) {
+  // make clouddiffuse depend on actual y position of pixel?
+  float clouddiffuseY =
+      clouddiffuse * (0.25 + 0.75 * smoothstep(-1.0, 0.5, vclipspace.y));
+
   vec3 texcoord = 0.0005 * (p + offset + vec3(0.0, 0.41 * p.y, 0.11 * p.z));
-  return texture(cloudtex, texcoord).x;
+  return clouddiffuseY + texture(cloudtex, texcoord).x;
 }
 
 float lightconedens(vec3 p, vec3 p0, vec3 p1, vec3 p3, vec3 p5, vec3 p6,
@@ -97,24 +101,23 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
   float clouddens, lightdens, energy;
 
   float k = 2.0;
-  // vec3 ambient = mix(skyrgb,mix(sunrgb,vec3(1.0),0.5),0.5);
-  float sunheight =
-      1.0 - 0.5 * solzenazi.x / PI; // 0 at horizon, 1 at straight up
+  // sunheight 0 at horizon, 1 at straight up
+  float sunheight = 1.0 - 0.5 * solzenazi.x / PI;
   vec3 ambient = mix(skyrgb, sunrgb, sunheight);
 
   for (float t = 0.0; t < 20.0 * ss; t += ss) {
     p = ro + t * rd;
-    clouddens =
-        cloudsharpness * dens(p, offset); // how dense this point is with clouds
-    lightdens =
-        cloudsharpness *
-        lightconedens(p, p0, p1, p3, p5, p6,
-                      offset); // how much light is refracted into this point
-                               // (based on some density samples nearby)
-    energy =
-        B(k * lightdens) * P(k * clouddens) *
-        hg; // energy = B * P * HG (Schneider & Vos, 2015)
-            // https://www.guerrilla-games.com/read/the-real-time-volumetric-cloudscapes-of-horizon-zero-dawn
+    // how dense this point is with clouds
+    clouddens = cloudsharpness * dens(p, offset);
+
+    // how much light is refracted into this point
+    // (based on some density samples nearby)
+    lightdens = cloudsharpness * lightconedens(p, p0, p1, p3, p5, p6, offset);
+
+    // energy = B * P * HG (Schneider & Vos, 2015)
+    // https://www.guerrilla-games.com/read/the-real-time-volumetric-cloudscapes-of-horizon-zero-dawn
+    energy = B(k * lightdens) * P(k * clouddens) * hg;
+
     // col = mix(col, ambient, energy);
     col = mix(mix(col, ambient, energy), col + sunrgb * energy, clouddens);
     sumclouddens += clouddens;
