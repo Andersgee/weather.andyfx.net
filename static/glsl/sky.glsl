@@ -131,18 +131,9 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
 }
 
 /*
-float sdAxisAlignedRect(vec2 uv, vec2 tl, vec2 br) {
-  vec2 d = max(tl-uv, uv-br);
-  return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
-}
-
-
-float dtoa(float d, float amount) {
-  return clamp(1.0 / (clamp(d, 1.0/amount, 1.0)*amount), 0.0, 1.0);
-}
-
 vec3 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
-vec2 p1, vec2 p2) { vec2 posInLine = smoothstep(p1, p2, uv);
+                         vec2 p1, vec2 p2) {
+  vec2 posInLine = smoothstep(p1, p2, uv);
 
   float wobbleAmplitude = 0.13;
   uv.x += sin(posInLine.y * 6.283185 * 0.2) * wobbleAmplitude;
@@ -150,24 +141,24 @@ vec2 p1, vec2 p2) { vec2 posInLine = smoothstep(p1, p2, uv);
   float d = sdAxisAlignedRect(uv, p1, vec2(p1.x, p2.y));
   d -= abs(p1.x - p2.x) * 0.5;
 
-  posInLine = pow(posInLine, vec2(0.7)); //falloff.
+  posInLine = pow(posInLine, vec2(0.7)); // falloff.
 
   float strokeStrength = dtoa(d, 100.);
 
-  //couple of frequencies
-  vec2 f1 = vec2(1.119, 1.0); //low
-  vec2 f2 = vec2(8.233, 1.0); //medium
-  vec2 f3 = vec2(43.092, 1.0); //high
-  vec2 p=p2-uv;
-  float strokeAlpha = noise(f1*p) + noise(f2*p) + noise(f3*p);
+  // couple of frequencies
+  vec2 f1 = vec2(1.119, 1.0);  // low
+  vec2 f2 = vec2(8.233, 1.0);  // medium
+  vec2 f3 = vec2(43.092, 1.0); // high
+  vec2 p = p2 - uv;
+  float strokeAlpha = noise(f1 * p) + noise(f2 * p) + noise(f3 * p);
 
   float r = 1.0 - posInLine.y;
-  strokeAlpha = 0.66*strokeAlpha * strokeStrength;
+  strokeAlpha = 0.66 * strokeAlpha * strokeStrength;
   strokeAlpha -= r;
-  strokeAlpha = r*(1.0 - strokeAlpha);
+  strokeAlpha = r * (1.0 - strokeAlpha);
 
   const float inkOpacity = 0.85;
-  float fillAlpha = (dtoa(abs(d), 90.0) * (1.0-inkOpacity)) + inkOpacity;
+  float fillAlpha = (dtoa(abs(d), 90.0) * (1.0 - inkOpacity)) + inkOpacity;
 
   float alpha = fillAlpha * strokeAlpha * brushColor.a;
   return mix(inpColor, brushColor.rgb, alpha);
@@ -177,7 +168,8 @@ vec3 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
   vec2 rect = p2 - p1;
   float angle = atan(rect.x, rect.y);
   mat2 R = rotmat(angle);
-  return brushstroke_aligned(R*uv, uv, bgcol, col, R*p1-width, R*p2+width);
+  return brushstroke_aligned(R * uv, uv, bgcol, col, R * p1 - width,
+                             R * p2 + width);
 }
 */
 void main(void) {
