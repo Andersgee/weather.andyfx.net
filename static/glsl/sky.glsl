@@ -101,6 +101,9 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
   float clouddens, lightdens, energy;
 
   float k = 2.0;
+  // does rain affect phase?
+  float r = 2.0 + smoothstep(0.0, 1.5, rain) * hg * 3.0;
+
   // sunheight 0 at horizon, 1 at straight up
   float sunheight = 1.0 - 0.5 * solzenazi.x / PI;
   vec3 ambient = mix(skyrgb, sunrgb, sunheight);
@@ -109,6 +112,7 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
     p = ro + t * rd;
     // how dense this point is with clouds
     clouddens = cloudsharpness * dens(p, offset);
+    sumclouddens += clouddens;
 
     // how much light is refracted into this point
     // (based on some density samples nearby)
@@ -116,17 +120,66 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
 
     // energy = B * P * HG (Schneider & Vos, 2015)
     // https://www.guerrilla-games.com/read/the-real-time-volumetric-cloudscapes-of-horizon-zero-dawn
-    energy = B(k * lightdens) * P(k * clouddens) * hg;
+    energy = B(r * lightdens) * P(k * clouddens) * hg;
 
     // col = mix(col, ambient, energy);
     col = mix(mix(col, ambient, energy), col + sunrgb * energy, clouddens);
-    sumclouddens += clouddens;
   }
 
   float alpha = 1.0 - B(sumclouddens);
   return vec4(col, alpha);
 }
 
+/*
+float sdAxisAlignedRect(vec2 uv, vec2 tl, vec2 br) {
+  vec2 d = max(tl-uv, uv-br);
+  return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
+}
+
+
+float dtoa(float d, float amount) {
+  return clamp(1.0 / (clamp(d, 1.0/amount, 1.0)*amount), 0.0, 1.0);
+}
+
+vec3 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
+vec2 p1, vec2 p2) { vec2 posInLine = smoothstep(p1, p2, uv);
+
+  float wobbleAmplitude = 0.13;
+  uv.x += sin(posInLine.y * 6.283185 * 0.2) * wobbleAmplitude;
+
+  float d = sdAxisAlignedRect(uv, p1, vec2(p1.x, p2.y));
+  d -= abs(p1.x - p2.x) * 0.5;
+
+  posInLine = pow(posInLine, vec2(0.7)); //falloff.
+
+  float strokeStrength = dtoa(d, 100.);
+
+  //couple of frequencies
+  vec2 f1 = vec2(1.119, 1.0); //low
+  vec2 f2 = vec2(8.233, 1.0); //medium
+  vec2 f3 = vec2(43.092, 1.0); //high
+  vec2 p=p2-uv;
+  float strokeAlpha = noise(f1*p) + noise(f2*p) + noise(f3*p);
+
+  float r = 1.0 - posInLine.y;
+  strokeAlpha = 0.66*strokeAlpha * strokeStrength;
+  strokeAlpha -= r;
+  strokeAlpha = r*(1.0 - strokeAlpha);
+
+  const float inkOpacity = 0.85;
+  float fillAlpha = (dtoa(abs(d), 90.0) * (1.0-inkOpacity)) + inkOpacity;
+
+  float alpha = fillAlpha * strokeAlpha * brushColor.a;
+  return mix(inpColor, brushColor.rgb, alpha);
+}
+
+vec3 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
+  vec2 rect = p2 - p1;
+  float angle = atan(rect.x, rect.y);
+  mat2 R = rotmat(angle);
+  return brushstroke_aligned(R*uv, uv, bgcol, col, R*p1-width, R*p2+width);
+}
+*/
 void main(void) {
   // between 30 and 90 degrees from horizontal
   float fovy_offset = PI / 6.0;
@@ -144,19 +197,26 @@ void main(void) {
 
   // larger rain effect at bottom of screen
   // float raineffect = 0.8 - 0.75 * smoothstep(-0.95, 0.2, vclipspace.y);
-  // float rainfactor = smoothstep(0.0, 1.5, rain);
+  float rainfactor = smoothstep(0.0, 1.5, rain);
 
   vec3 skyrgb = skycolor(zenith, azimuth);
   vec3 sunrgb = skycolor(0.99 * solzenazi.x, solzenazi.y);
   vec4 cloudrgba = cloudcolor(ro, rd, sundir, skyrgb, sunrgb);
-
+  // cloudrgba.xyz = mix(cloudrgba.xyz, cloudrgba.xyz * 0.1, rainfactor);
   fragcolor = vec4(mix(skyrgb, cloudrgba.xyz, cloudrgba.w), 1.0);
-  // fragcolor.x = cloudcoverage;
-  // vec3 offset = vec3(0.0);
-  // vec3 kek = dens(p, offset);
-  // fragcolor = vec4(kek.x, 0.0, 0.0, 1.0);
-  // float a = texture(cloudtex, p*0.0005).x;
-  // fragcolor = vec4(a*10.0, a, a, 1.0);
+
+  /*
+    vec4 raincol = vec4(0.25*mix(skyrgb,cloudrgba.xyz,0.66)/vrain, 0.9);
+    vec2 startpoint = vec2(-1.3, 0.5-2.5*t);
+    vec2 endpoint = vec2(-1.3, -1.0-2.5*t);
+    float width = 2.0;
+    vec3 rainbrushrgb = brushstroke(uv, fragcolor.xyz, raincol, startpoint,
+    endpoint, width); rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
+    smoothstep(0.0, 1.0, 1.0-sqrt(uv.y))); //fade in effect when moving down in
+    y
+
+    fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5*clamp01(2.0*rain));
+  */
 }
 
 #endif
