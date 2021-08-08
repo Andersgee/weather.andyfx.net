@@ -130,7 +130,7 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
   return vec4(col, alpha);
 }
 
-vec3 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
+vec4 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
                          vec2 p1, vec2 p2) {
   vec2 posInLine = smoothstep(p1, p2, uv);
 
@@ -156,14 +156,14 @@ vec3 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
   strokeAlpha -= r;
   strokeAlpha = r * (1.0 - strokeAlpha);
 
-  const float inkOpacity = 0.85;
+  float inkOpacity = 0.85;
   float fillAlpha = (dtoa(abs(d), 90.0) * (1.0 - inkOpacity)) + inkOpacity;
 
   float alpha = fillAlpha * strokeAlpha * brushColor.a;
-  return mix(inpColor, brushColor.rgb, alpha);
+  return vec4(mix(inpColor, brushColor.rgb, alpha), alpha);
 }
 
-vec3 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
+vec4 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
   vec2 rect = p2 - p1;
   float angle = atan(rect.x, rect.y);
   mat2 R = rotmat(angle);
@@ -214,24 +214,24 @@ void main(void) {
   // float t = trianglewave(time);
 
   vec4 raincol = vec4(mix(skyrgb, cloudrgba.xyz, 0.66) * 0.25 / vrain, 0.9);
-  vec2 startpoint = vec2(-1.3, 0.5);
-  vec2 endpoint = vec2(-1.3, -1.0);
+  vec2 startpoint = vec2(-1.0, 1.5);
+  vec2 endpoint = vec2(-1.0, 0.0);
   float width = 2.0;
 
-  vec3 rainbrushrgb =
-      brushstroke(mod(uv.xy + vec2(time * 0.1, 0.0), 4.0), fragcolor.xyz,
-                  raincol, startpoint, endpoint, width);
+  vec4 rainbrushrgba =
+      brushstroke(mod(uv.xy + vec2(0.01 * time, 0.1 * time), vec2(2.0, 4.0)),
+                  fragcolor.xyz, raincol, startpoint, endpoint, width);
+  vec3 rainbrushrgb = rainbrushrgba.xyz;
 
-  fragcolor.xyz = rainbrushrgb.xyz;
-  /*
-    // fade in effect when moving down on screen
-    float rainbrusheffect = 1.0 - uv.y;
-    rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
-                       0.8 * smoothstep(0.3, 1.0, rainbrusheffect));
+  // fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgba.xyz, rainbrushrgba.w);
 
-    // mix in depending on actual rain
-    fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5 * clamp01(2.0 * rain));
-    */
+  // fade in effect when moving down on screen
+  float rainbrusheffect = 1.0 - uv.y;
+  rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
+                     0.8 * smoothstep(0.3, 1.0, rainbrusheffect));
+
+  // mix in depending on actual rain
+  fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5 * clamp01(2.0 * rain));
 }
 
 #endif
