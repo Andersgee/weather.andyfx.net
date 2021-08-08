@@ -214,12 +214,13 @@ void main(void) {
   // float t = trianglewave(time);
 
   vec4 raincol = vec4(mix(skyrgb, cloudrgba.xyz, 0.66) * 0.25 / vrain, 0.9);
-  vec2 startpoint = vec2(-1.3, 0.5 - 2.5 * t);
-  vec2 endpoint = vec2(-1.3, -1.0 - 2.5 * t);
+  vec2 startpoint = vec2(-1.3, 0.5);
+  vec2 endpoint = vec2(-1.3, -1.0);
   float width = 2.0;
 
   vec3 rainbrushrgb =
-      brushstroke(uv, fragcolor.xyz, raincol, startpoint, endpoint, width);
+      brushstroke(mod(uv.xy + vec2(time * 0.1, 0.0), 4.0), fragcolor.xyz,
+                  raincol, startpoint, endpoint, width);
 
   fragcolor.xyz = rainbrushrgb.xyz;
   /*
