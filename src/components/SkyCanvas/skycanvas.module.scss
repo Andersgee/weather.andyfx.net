@@ -11,3 +11,12 @@
 .canvas {
   width: 100%;
 }
+
+.textbox {
+  display: flex;
+  justify-content: center;
+}
+
+.textboxcontent {
+  padding: 10px 0 10px 0;
+}

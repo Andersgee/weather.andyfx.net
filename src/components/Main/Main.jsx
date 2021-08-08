@@ -9,7 +9,7 @@ import Table from "@components/Table";
 import Visual from "@components/Visual";
 
 export default function Main() {
-  const [active, setActive] = React.useState("visual");
+  const [active, setActive] = React.useState("table");
 
   const lon = 16.33; //salbohed
   const lat = 59.91;

@@ -69,6 +69,7 @@ export default function SkyCanvas({ weather, glsl, textures }) {
 
   return (
     <div className={styles.skycanvas}>
+      {/*
       <div>cloudiness</div>
       <input
         type="range"
@@ -97,6 +98,14 @@ export default function SkyCanvas({ weather, glsl, textures }) {
         onChange={handleIndex}
       />
       <div>minutes</div>
+      */}
+      <div className={styles.textbox}>
+        <div className={styles.textboxcontent}>
+          <div>{w.date.toDateString()}</div>
+          <div>clouds: {Math.round(w.cloudiness * 100)}%</div>
+          <div>rain: {Math.round(w.rain * 10) / 10} mm/h</div>
+        </div>
+      </div>
       <input
         type="range"
         step={1}
@@ -105,7 +114,7 @@ export default function SkyCanvas({ weather, glsl, textures }) {
         value={minuteoffset}
         onChange={handleMinuteoffset}
       />
-      <div>image</div>
+
       <canvas ref={canvasref} className={styles.canvas} />
     </div>
   );
