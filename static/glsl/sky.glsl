@@ -130,8 +130,8 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
   return vec4(col, alpha);
 }
 
-vec4 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
-                         vec2 p1, vec2 p2) {
+vec4 brushstroke_aligned(vec2 uv, vec3 inpColor, vec4 brushColor, vec2 p1,
+                         vec2 p2) {
   vec2 posInLine = smoothstep(p1, p2, uv);
 
   float wobbleAmplitude = 0.13;
@@ -167,7 +167,7 @@ vec4 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
   vec2 rect = p2 - p1;
   float angle = atan(rect.x, rect.y);
   mat2 R = rotmat(angle);
-  return brushstroke_aligned(R * uv, uv, bgcol, col, R * p1 - width,
+  return brushstroke_aligned(R * uv, bgcol, col, R * p1 - width,
                              R * p2 + width);
 }
 
@@ -214,12 +214,12 @@ void main(void) {
   // float t = trianglewave(time);
 
   vec4 raincol = vec4(mix(skyrgb, cloudrgba.xyz, 0.66) * 0.25 / vrain, 0.9);
-  vec2 startpoint = vec2(-1.0, 1.5);
-  vec2 endpoint = vec2(-1.0, 0.0);
+  vec2 startpoint = vec2(-1.0, 7.0);
+  vec2 endpoint = vec2(-1.0, -17.1);
   float width = 2.0;
 
   vec4 rainbrushrgba =
-      brushstroke(mod(uv.xy + vec2(0.01 * time, 0.1 * time), vec2(2.0, 4.0)),
+      brushstroke(mod(uv.xy + vec2(0.005 * time, 0.05 * time), vec2(2.0, 7.0)),
                   fragcolor.xyz, raincol, startpoint, endpoint, width);
   vec3 rainbrushrgb = rainbrushrgba.xyz;
 
