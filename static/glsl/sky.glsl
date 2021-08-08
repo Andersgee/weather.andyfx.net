@@ -221,12 +221,16 @@ void main(void) {
   vec3 rainbrushrgb =
       brushstroke(uv, fragcolor.xyz, raincol, startpoint, endpoint, width);
 
-  // fade in effect when moving down on screen
-  float rainbrusheffect = 1.0 - uv.y;
-  rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
-                     0.8 * smoothstep(0.3, 1.0, rainbrusheffect));
+  fragcolor.xyz = rainbrushrgb.xyz;
+  /*
+    // fade in effect when moving down on screen
+    float rainbrusheffect = 1.0 - uv.y;
+    rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
+                       0.8 * smoothstep(0.3, 1.0, rainbrusheffect));
 
-  fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5 * clamp01(2.0 * rain));
+    // mix in depending on actual rain
+    fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5 * clamp01(2.0 * rain));
+    */
 }
 
 #endif
