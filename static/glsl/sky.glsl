@@ -90,7 +90,7 @@ vec4 cloudcolor(vec3 ro, vec3 rd, vec3 sundir, vec3 skyrgb, vec3 sunrgb) {
 
   // put wind/movement here
   vec3 offset = 0.02 * vec3(0.0, -2.61 * dt, 1.0 * dt);
-  offset += vec3(0.0, -time * 80.0, 0.0);
+  offset += vec3(0.0, -(time + ts * 10.0) * 80.0, 0.0);
 
   float hg = HG(dot(sundir, rd), 0.5) * 0.5; // phase
   float sumclouddens = 0.0;
@@ -219,7 +219,8 @@ void main(void) {
   float width = 2.0;
 
   vec4 rainbrushrgba =
-      brushstroke(mod(uv.xy + vec2(0.005 * time, 0.05 * time), vec2(2.0, 7.0)),
+      brushstroke(mod(uv.xy + vec2(0.005 * (time + ts), 0.05 * (time + ts)),
+                      vec2(2.0, 7.0)),
                   fragcolor.xyz, raincol, startpoint, endpoint, width);
   vec3 rainbrushrgb = rainbrushrgba.xyz;
 
