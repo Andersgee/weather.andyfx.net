@@ -6,7 +6,7 @@ import * as styles from "./skycanvas.module.scss";
 export default function SkyCanvas({ weather, glsl, textures }) {
   const canvasref = useRef();
   const [sky, setSky] = useState(null);
-  const [index, setIndex] = useState(3);
+  const [index, setIndex] = useState(0);
   const [w, setW] = useState(weather.list[index]);
 
   const handleCloudiness = (e) => {

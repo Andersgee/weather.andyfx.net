@@ -142,7 +142,7 @@ vec3 brushstroke_aligned(vec2 uv, vec2 uvPaper, vec3 inpColor, vec4 brushColor,
 
   posInLine = pow(posInLine, vec2(0.7)); // falloff.
 
-  float strokeStrength = dtoa(d, 100.);
+  float strokeStrength = dtoa(d, 100.0);
 
   // couple of frequencies
   vec2 f1 = vec2(1.119, 1.0);  // low
@@ -169,6 +169,12 @@ vec3 brushstroke(vec2 uv, vec3 bgcol, vec4 col, vec2 p1, vec2 p2, float width) {
   mat2 R = rotmat(angle);
   return brushstroke_aligned(R * uv, uv, bgcol, col, R * p1 - width,
                              R * p2 + width);
+}
+
+float trianglewave(float x) {
+  float f1 = 2.0 * fract(0.5 * x);
+  float f2 = 2.0 * fract(-0.5 * x);
+  return min(f1, f2);
 }
 
 void main(void) {
@@ -202,7 +208,10 @@ void main(void) {
 
   vec2 uv = vclipspace.xy * 0.5 + 0.5;
   float vrain = (rain > 0.0) ? 2.0 : 1.0;
-  float t = ts / 24.0 + fract(time);
+  // float t = ts / 24.0 + fract(time * 0.1);
+  // float t = sin(time);
+  float t = 0.0;
+  // float t = trianglewave(time);
 
   vec4 raincol = vec4(mix(skyrgb, cloudrgba.xyz, 0.66) * 0.25 / vrain, 0.9);
   vec2 startpoint = vec2(-1.3, 0.5 - 2.5 * t);
@@ -212,10 +221,10 @@ void main(void) {
   vec3 rainbrushrgb =
       brushstroke(uv, fragcolor.xyz, raincol, startpoint, endpoint, width);
 
-  // fade in effect when moving down in
-  float rainbrusheffect = 1.0 - sqrt(uv.y);
-  rainbrushrgb =
-      mix(fragcolor.xyz, rainbrushrgb, smoothstep(0.0, 1.0, rainbrusheffect));
+  // fade in effect when moving down on screen
+  float rainbrusheffect = 1.0 - uv.y;
+  rainbrushrgb = mix(fragcolor.xyz, rainbrushrgb,
+                     0.8 * smoothstep(0.3, 1.0, rainbrusheffect));
 
   fragcolor.xyz = mix(fragcolor.xyz, rainbrushrgb, 0.5 * clamp01(2.0 * rain));
 }
