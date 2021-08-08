@@ -97,8 +97,8 @@ export default class Skyweather {
     this.uniforms.cloudcoverage = data.cloudiness;
 
     this.uniforms.rain = data.rain;
-    console.log("rain:", this.uniforms.rain);
-    console.log("cloudcoverage:", this.uniforms.cloudcoverage);
+    //console.log("rain:", this.uniforms.rain);
+    //console.log("cloudcoverage:", this.uniforms.cloudcoverage);
 
     const ts = timestandard(data.date);
     const J = dayOfYear(data.date);
