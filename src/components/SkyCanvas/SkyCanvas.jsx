@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRef, useEffect, useState } from "react";
 import Skyweather from "@js/skyweather-gl";
+import Description from "./Description";
 import * as styles from "./skycanvas.module.scss";
 
 import { mix } from "@js/interpolate";
@@ -12,10 +13,10 @@ function addMinutes(date, minutes) {
 export default function SkyCanvas({ weather, glsl, textures }) {
   const canvasref = useRef();
   const [sky, setSky] = useState(null);
-  const [index, setIndex] = useState(0);
+  //const [index, setIndex] = useState(0);
   const [minuteoffset, setMinuteoffset] = useState(0);
-  const [w, setW] = useState(weather.list[index]);
-
+  const [w, setW] = useState(weather.list[0]);
+  /*
   const handleCloudiness = (e) => {
     const w_new = { ...w, cloudiness: e.target.value };
     sky.setuniforms(w_new, weather.city);
@@ -36,7 +37,7 @@ export default function SkyCanvas({ weather, glsl, textures }) {
     setW(w_new);
     setIndex(i);
   };
-
+*/
   const handleMinuteoffset = (e) => {
     const o = e.target.value; //how many minutes past datapoint 0
 
@@ -60,7 +61,7 @@ export default function SkyCanvas({ weather, glsl, textures }) {
   };
 
   useEffect(() => {
-    console.log("instantiating a new Skyweather");
+    console.log("instantiating new Skyweather");
     const canvas = canvasref.current;
     const sky = new Skyweather(canvas, glsl, textures);
     setSky(sky);
@@ -99,13 +100,7 @@ export default function SkyCanvas({ weather, glsl, textures }) {
       />
       <div>minutes</div>
       */}
-      <div className={styles.textbox}>
-        <div className={styles.textboxcontent}>
-          <div>{w.date.toDateString()}</div>
-          <div>clouds: {Math.round(w.cloudiness * 100)}%</div>
-          <div>rain: {Math.round(w.rain * 10) / 10} mm/h</div>
-        </div>
-      </div>
+      <Description w={w} />
       <input
         type="range"
         step={1}

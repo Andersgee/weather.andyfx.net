@@ -1,0 +1,42 @@
+@import "@styles/variables/all";
+
+.textbox {
+  display: flex;
+  justify-content: center;
+}
+
+.textboxcontent {
+  padding: 10px 0 10px 0;
+  //border: 1px solid #000;
+}
+
+.timestandard {
+  display: flex;
+  justify-content: center;
+  //font-family: $font-mono;
+  font-weight: 700;
+}
+
+.datestring {
+  display: flex;
+  justify-content: center;
+  //font-family: $font-mono;
+  //font-weight: 700;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.col1 {
+  padding: 0 8px 0 8px;
+  //border: 1px solid #000;
+}
+
+.col2 {
+  //font-family: $font-mono;
+  padding: 0 8px 0 0;
+  font-weight: 700;
+  //border: 1px solid #000;
+}
