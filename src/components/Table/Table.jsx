@@ -63,7 +63,10 @@ function TableRow(x) {
       </div>
 
       <div className={styles.item}>
-        {Rect(`${Math.round((100 * x.temp) / 30)}%`, "rgb(122, 212, 162)")}
+        {Rect(
+          `${Math.max(0, Math.round((100 * x.temp) / 30))}%`,
+          "rgb(122, 212, 162)"
+        )}
         <div
           className={styles.textpadding}
           style={{ position: "absolute", right: "0" }}
